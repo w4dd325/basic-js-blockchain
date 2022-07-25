@@ -1,0 +1,34 @@
+<html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="myBlockchain.js"></script>
+
+<style>
+    .area {
+        min-width: 600px;
+        display: inline-block;
+    }
+    
+    .area textarea {
+        display: block;
+        width: 600px;
+        height: 100px
+    }
+    
+    .area span.areaButton {
+        display: block;
+        text-align: right;
+    }
+</style>
+
+<body>
+    <center>
+        <div class="area">
+            <span class="areaTitle">Enter the data you want to add to the blockchain.</span>
+            <textarea id="blockData" name="blockData"></textarea>
+            <span class="areaButton"><button type="button" onclick="addBlockToChain()">Try it</button></span>
+        </div>
+    </center>
+    <pre id="json"></pre>
+</body>
+
+</html>
