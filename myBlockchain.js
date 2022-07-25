@@ -1,5 +1,3 @@
-const sha256 = require("crypto-js/sha256");
-
 class Block {
     //Items needed to create a block
     constructor(index, timestamp, data, previousHash = '') {
@@ -12,7 +10,7 @@ class Block {
 
     //Hash all block items using sha256
     calculateHash() {
-        return sha256(this.index + this.previousHash + this.timestamp + JSON.stringify(this.data)).toString();
+        return CryptoJS.SHA256(this.index + this.previousHash + this.timestamp + JSON.stringify(this.data)).toString();
     }
 }
 
@@ -24,7 +22,7 @@ class BlockChain {
 
     //Genesis block is the first block in the array, and should be manually added.
     createGenesisBlock() {
-        return new Block(0, "01/01/2022", "Genesis block", "0");
+        return new Block(0, "01/01/2022", "Genesis block", "0", "0");
     }
 
     //Returns the latest block in the chain
@@ -69,19 +67,31 @@ class BlockChain {
 
 //---------------------------------------------------------------
 
-//Create a new instance of the blockchain
+//start at 1 to skip genesis block
+let blockIndex = 1;
+//Initialise new block on load
 let myCoin = new BlockChain();
+//console.debug("mycoin length = " + myCoin.chain.length);
 
-//Add new blocks to the blockchain
-myCoin.addBlock(new Block(1, "23/07/2022", { amount: 4 }));
-myCoin.addBlock(new Block(2, "24/07/2022", { amount: 10 }));
+function addBlockToChain() {
+    //Grab timestamp
+    let blockTimestamp = new Date().getTime();
+    //Grab textarea data
+    let blockData = document.getElementById("blockData").value;
 
-//---------------------------------------------------------------
+    //Build new block
+    myCoin.addBlock(new Block(blockIndex, blockTimestamp, { blockData }));
+    //console.debug(JSON.stringify(myCoin, null, 4));
 
-//Output is the chain is valid...
-//console.log('Is blockchain valid? ' + myCoin.isChainValid());
+    //Output to the HTML page
+    //document.getElementById("json").innerHTML = JSON.stringify(myCoin, null, 4);
+    document.getElementById("json").innerHTML = JSON.stringify(myCoin, undefined, 4);
 
-//---------------------------------------------------------------
+    //Increment blockIndex for next block
+    blockIndex++;
 
-//Display the blockchain
-console.log(JSON.stringify(myCoin, null, 4));
+    //---------------------------------------------------------------
+    //Output is the chain is valid...
+    //console.log('Is blockchain valid? ' + myCoin.isChainValid());
+    //---------------------------------------------------------------
+}
